@@ -30,6 +30,6 @@ void Delay(unsigned short ms){
 		asm("nop");
 }
 
-uint64_t ms(void){
+uint64_t Millis(void){
 	return count;
 }

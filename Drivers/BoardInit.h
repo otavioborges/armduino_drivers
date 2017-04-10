@@ -12,6 +12,6 @@
 
 void ConfigBoardDefaultMuxing(void);
 void Delay(unsigned short ms);
-uint64_t ms(void);
+uint64_t Millis(void);
 
 #endif /* DRIVERS_BOARDINIT_H_ */
