@@ -8,10 +8,18 @@
 #include "system_MKE02Z2.h"
 #include "Serial.h"
 
-functionPtr functionAdd;
+functionPtr functionUART0;
+functionPtr functionUART1;
+functionPtr functionUART2;
 
 void UART0_IRQHandler(void){
-	functionAdd();
+	functionUART0();
+}
+void UART1_IRQHandler(void){
+	functionUART1();
+}
+void UART2_IRQHandler(void){
+	functionUART2();
 }
 
 UART_Type* SelectUART(SerialNumber serial){
@@ -138,5 +146,15 @@ void Serial_DisableReceiveIRQ(SerialNumber serial){
 }
 
 void Serial_SetIRQFunction(SerialNumber serial, functionPtr function){
-	functionAdd = function;
+	switch(serial){
+		case Serial0:
+			functionUART0 = function;
+			break;
+		case Serial1:
+			functionUART1 = function;
+			break;
+		case Serial2:
+			functionUART2 = function;
+			break;
+	}
 }
