@@ -30,6 +30,7 @@ typedef enum{
 typedef void (*functionPtr)(void);
 
 void Serial_Setup(SerialNumber serial, unsigned short baudrate, Parity parity, StopBits stopbits);
+void Serial_Deinit(SerialNumber serial);
 void Serial_Write(SerialNumber serial, unsigned char *data, unsigned short length);
 void Serial_Read(SerialNumber serial, unsigned char *data, unsigned short length);
 

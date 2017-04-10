@@ -66,6 +66,21 @@ void Serial_Setup(SerialNumber serial, unsigned short baudrate, Parity parity, S
 	lUART->C3 = 0;
 }
 
+void Serial_Deinit(SerialNumber serial){
+	// deactivate Clock
+	switch(serial){
+		case Serial0:
+			SIM->SCGC &= ~(SIM_SCGC_UART0_MASK);
+			break;
+		case Serial1:
+			SIM->SCGC &= ~(SIM_SCGC_UART1_MASK);
+			break;
+		case Serial2:
+			SIM->SCGC &= ~(SIM_SCGC_UART2_MASK);
+			break;
+	}
+}
+
 void Serial_Write(SerialNumber serial, unsigned char *data, unsigned short length){
 	UART_Type* lUART = SelectUART(serial);
 
