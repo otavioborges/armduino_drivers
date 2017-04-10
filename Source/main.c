@@ -10,6 +10,7 @@
 
 #include "MKE02Z2.h"
 #include "BoardInit.h"
+#include "Digital.h"
 
 #include "Serial.h"
 #include <string.h>
@@ -47,6 +48,8 @@ int main(void){
 	Serial_Setup(Serial0,57600u,None,One);
 	Serial_SetIRQFunction(Serial0,Serial0Irq);
 	Serial_EnableReceiveIRQ(Serial0);
+
+	Digital_pinMode(Digital2,OUTPUT);
 
 	for(;;){
 		// loop routine
