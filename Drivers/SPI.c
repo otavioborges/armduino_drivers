@@ -13,7 +13,7 @@ void SPI1_IRQHandler(void){
 }
 
 uint8_t SPI_CalcBR(uint32_t freq){
-	uint8_t SPR[8] = 0;
+	uint8_t SPR[8];
 
 	int32_t closestResults[8];
 	for(uint8_t SPPR = 0; SPPR < 8; SPPR++){
@@ -30,7 +30,7 @@ uint8_t SPI_CalcBR(uint32_t freq){
 	for(uint8_t SPPR = 0; SPPR < 8; SPPR++){
 		closestResults[SPPR] = freq - closestResults[SPPR];
 		if(closestResults[SPPR] < 0)
-			closestResults[SPPR] = ~(closestResults) + 1;
+			closestResults[SPPR] = ~(closestResults[SPPR]) + 1u;
 
 		if(closestResults[SPPR] < closestResults[bestSPPR])
 			bestSPPR = SPPR;
