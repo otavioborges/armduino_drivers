@@ -116,17 +116,17 @@ void SystemInit (void) {
 #endif /* (DISABLE_WDOG) */
 #if (CLOCK_SETUP == 0)
   /* ICS->C2: BDIV|=1 */
-  ICS->C2 |= ICS_C2_BDIV(0x01);         /* Update system prescalers */
+  ICS->C2 |= ICS_C2_BDIV(0x00);         /* Update system prescalers */
   /* SIM->BUSDIV: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,BUSDIV=0 */
   SIM->BUSDIV = 0x00U;                  /* Update system prescalers */
   /* Switch to FEI Mode */
   /* ICS->C1: CLKS=0,RDIV=0,IREFS=1,IRCLKEN=1,IREFSTEN=0 */
   ICS->C1 = ICS_C1_CLKS(0x00) |
-           ICS_C1_RDIV(0x00) |
+           ICS_C1_RDIV(0x01) |
            ICS_C1_IREFS_MASK |
            ICS_C1_IRCLKEN_MASK;
   /* ICS->C2: BDIV=1,LP=0 */
-  ICS->C2 = ICS_C2_BDIV(0x01);
+  ICS->C2 = ICS_C2_BDIV(0x00);
   /* OSC->CR: OSCEN=0,??=0,OSCSTEN=0,OSCOS=0,??=0,RANGE=0,HGO=0,OSCINIT=0 */
   OSC->CR = 0x00U;
   while((ICS->S & ICS_S_IREFST_MASK) == 0x00U) { /* Check that the source of the FLL reference clock is the internal reference clock. */

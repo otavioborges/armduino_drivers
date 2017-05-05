@@ -15,7 +15,7 @@ void SysTick_Handler(void){
 }
 
 void ConfigBoardDefaultMuxing(void){
-	//SystemCoreClockUpdate();
+	SystemCoreClockUpdate();
 
 	SIM->SOPT &= ~(SIM_SOPT_NMIE_MASK);			// disable NMIE on PTB4 (used as output)
 	SIM->PINSEL = 0;							// default pin muxing
