@@ -60,15 +60,11 @@ void Serial_Setup(SerialNumber serial, unsigned short baudrate, Parity parity, S
 	lUART->BDL = (uint8_t)(baudRateDivider & 0x00FF);
 	lUART->C1 = UART_C1_UARTSWAI_MASK;
 
-	switch(parity){
-		case Even:
-			lUART->C1 |= UART_C1_PE_MASK;
-			lUART->C1 |= UART_C1_PT_MASK;
-			break;
-		case Odd:
-			lUART->C1 |= UART_C1_PE_MASK;
-			break;
+	if(parity != None){		// register setting on both Even and Odd
+		lUART->C1 |= (UART_C1_PE_MASK | UART_C1_M_MASK);
 	}
+	if(parity == Odd)		// change parity form even to odd, if it's the case
+		lUART->C1 |= UART_C1_PT_MASK;
 
 	lUART->C2 = (UART_C2_TE_MASK | UART_C2_RE_MASK);
 	lUART->C3 = 0;
