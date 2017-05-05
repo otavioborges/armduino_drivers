@@ -31,7 +31,7 @@ I2CMode selectedMode;
  */
 void I2C_Init(I2CMode mode, I2CClock clock, uint8_t generateACK_NACK, uint8_t address10bit, uint16_t address){
 	selectedMode = mode;
-	SIM->SCGC |= SIM_SCGC_I2C_MASK;
+	SIM->SCGC |= SIM_SCGC_IIC_MASK;
 
 	if(mode == I2CMaster){
 		switch(clock){
@@ -84,12 +84,12 @@ void I2C_Start(void){
 void I2C_Stop(void){
 	I2C0->C1 &= ~(I2C_C1_TX_MASK);
 
-	while((I2C0->S & I2C_S_BUSY_MASK));	// wait for STOP to be send
+	while((I2C0->S & I2C_S_BUSY_MASK) == 0);	// wait for STOP to be send
 }
 
 void I2C_MasterWrite(uint8_t data){
 	// wait for previous transfer to be complete
-	while((I2C0->S & I2C_S_TCF_MASK) == 0);
+	while((I2C0->S & I2C_S_TCF_MASK) != I2C_S_TCF_MASK);
 
 	I2C_TxEnable;
 	I2C0->D = data;
@@ -99,9 +99,6 @@ void I2C_MasterWrite(uint8_t data){
 }
 
 uint8_t I2C_MasterRead(uint8_t ack){
-	// wait for previous transfer to be complete
-	while((I2C0->S & I2C_S_TCF_MASK) == 0);
-
 	I2C_RxEnable;
 
 	if(ack)
@@ -110,6 +107,9 @@ uint8_t I2C_MasterRead(uint8_t ack){
 		I2C_NACK;
 
 	uint8_t recvByte = I2C0->D;
+
+	// wait for previous transfer to be complete
+	while((I2C0->S & I2C_S_TCF_MASK) == 0);
 
 	while((I2C0->S & I2C_S_IICIF_MASK) == 0);	// wait for byte to be transmitted
 	I2C0->S |= I2C_S_IICIF_MASK;				// clear IRQ mask
