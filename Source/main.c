@@ -10,9 +10,7 @@
 
 #include "MKE02Z2.h"
 #include "BoardInit.h"
-#include "Digital.h"
-#include "Interrupt.h"
-#include "SPI.h"
+#include "Analog.h"
 
 /*
  *
@@ -30,45 +28,29 @@
  */
 
 uint32_t countP = 0;
-
-void DigIrqFunction(uint8_t peripehral){
-	countP = 10;
-}
+uint16_t value = 0;
 
 uint8_t dataIn[4];
 uint8_t dataOut[4];
 
+uint8_t rising = 1;
+
 int main(void){
 	ConfigBoardDefaultMuxing();
 
-	Digital_pinMode(Digital7,INPUT_PULLUP);
-	Digital_pinMode(Digital8,OUTPUT);
+	Analog_InitPWM();
+	Analog_SetPWMPin(PWM8,TRUE);
 
-	Digital_pinMode(DigitalLed,OUTPUT);
-
-	Interrupt_SetIRQFunction(DigIrqFunction);
-	Interrupt_Init(TRUE, Edges);
-	Interrupt_EnablePin(IntPin11,FallingLowLevel);
-
-	SPI_Init(100000u, Master, ActiveHigh, Middle, MSB);
-
-	Digital_Write(Digital8,LOW);	// resets device
-	Delay(10);
-	Digital_Write(Digital8,HIGH);
-	Delay(10);						// reset done!
-
-	dataOut[0] = 0b01011111;
-	dataOut[1] = 0x03;
-	SPI_Transfer(dataOut,dataIn,4); // go to bank 3
-
-	dataOut[0] = 0b00010101;
-	SPI_Transfer(dataOut,dataIn,4); // read ECOCON
-
-	countP = Millis() + 1000u;
+	countP = Millis() + 1u;
 	while(1){
 		if(Millis() > countP){
-			Digital_Toggle(DigitalLed);
-			countP = Millis() + 1000u;
+			Analog_Write(PWM8,value);
+
+			countP = Millis() + 1u;
+			value += 10u;
+
+			if(value > 0x7FFF)
+				value = 0;
 		}
 	}
 

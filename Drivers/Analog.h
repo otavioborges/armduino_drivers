@@ -8,12 +8,15 @@
 #ifndef DRIVERS_ANALOG_H_
 #define DRIVERS_ANALOG_H_
 
+#define PWM_MIN_VALUE	0
+#define PWM_MAX_VALUE	32767u
+
 #include "MKE02Z2.h"
 
 typedef enum{
 	PWM6 = 5u,
-	PWM8 = 0u,
-	PWM9 = 1u
+	PWM8 = 1u,
+	PWM9 = 0u
 } PWM;
 
 typedef enum{
@@ -33,7 +36,7 @@ void Analog_InitAnalog(void);
 void Analog_DeinitPWM(void);
 void Analog_DeinitAnalog(void);
 
-void Analog_SetPWMPin(PWM pwmPin);
+void Analog_SetPWMPin(PWM pwmPin, uint8_t inverted);
 void Analog_UnsetPWMPin(PWM pwmPin);
 void Analog_Write(PWM pwmPin, uint16_t value);
 
