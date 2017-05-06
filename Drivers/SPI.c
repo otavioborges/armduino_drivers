@@ -20,15 +20,15 @@ uint8_t SPI_CalcBR(uint32_t freq){
 		closestResults[SPPR] = SystemCoreClock/(SPPR+1);
 		SPR[SPPR] = 0;
 
-		while(((closestResults[SPPR] >> (SPR[SPPR]+1u)) < freq) & SPR[SPPR] < 9){
+		while(((closestResults[SPPR] >> (SPR[SPPR]+1u)) > freq) & (SPR[SPPR] < 9)){
 			SPR[SPPR]++;
 		}
-		SPR[SPPR]--;
+		//SPR[SPPR]--;
 	}
 
 	uint8_t bestSPPR = 0;
 	for(uint8_t SPPR = 0; SPPR < 8; SPPR++){
-		closestResults[SPPR] = freq - closestResults[SPPR];
+		closestResults[SPPR] = freq - (closestResults[SPPR] >> (SPR[SPPR]+1u));
 		if(closestResults[SPPR] < 0)
 			closestResults[SPPR] = ~(closestResults[SPPR]) + 1u;
 
