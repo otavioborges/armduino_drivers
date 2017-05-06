@@ -36,12 +36,12 @@ typedef enum {
 	RiseHighLevel
 } EdgeSelect;
 
-typedef void (*functionPtr)(uint8_t);
+typedef void (*functionPtrInt)(uint8_t);
 
 void Interrupt_Init(uint8_t enableIRQ, DetectionMode mode);
 void Interrupt_EnablePin(InterruptPin pin, EdgeSelect edge);
 void Interrupt_DisablePin(InterruptPin pin);
 uint8_t Interrupt_PendingIRQ(void);
-void Interrupt_SetIRQFunction(functionPtr function);
+void Interrupt_SetIRQFunction(functionPtrInt function);
 
 #endif /* DRIVERS_INTERRUPT_H_ */

@@ -7,14 +7,14 @@
 
 #include "Interrupt.h"
 
-functionPtr KBIfunction;
+functionPtrInt KBIfunction;
 
 void KBI0_IRQHandler(void){
 	KBIfunction(0x00);
 	KBI0->SC |= KBI_SC_KBACK_MASK;
 }
 
-void KBI0_IRQHandler(void){
+void KBI1_IRQHandler(void){
 	KBIfunction(0x01);
 	KBI0->SC |= KBI_SC_KBACK_MASK;
 }
@@ -28,6 +28,9 @@ void Interrupt_Init(uint8_t enableIRQ, DetectionMode mode){
 	if(enableIRQ){
 		KBI0->SC |= KBI_SC_KBIE_MASK;
 		KBI1->SC |= KBI_SC_KBIE_MASK;
+
+		NVIC_EnableIRQ(KBI0_IRQn);
+		NVIC_EnableIRQ(KBI1_IRQn);
 	}
 	if(mode == EdgesAndLevels){
 		KBI0->SC |= KBI_SC_KBMOD_MASK;
@@ -70,6 +73,6 @@ uint8_t Interrupt_PendingIRQ(void){
 	return result;
 }
 
-void Interrupt_SetIRQFunction(functionPtr function){
+void Interrupt_SetIRQFunction(functionPtrInt function){
 	KBIfunction = function;
 }
