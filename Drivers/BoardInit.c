@@ -22,6 +22,7 @@ void ConfigBoardDefaultMuxing(void){
 
 	SysTick_Config(SystemCoreClock/1000u);	// 1ms tick
 	NVIC_EnableIRQ(SysTick_IRQn);
+	NVIC_SetPriority(SysTick_IRQn,0u);
 }
 
 void Delay(unsigned short ms){

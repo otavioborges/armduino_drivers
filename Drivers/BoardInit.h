@@ -10,6 +10,11 @@
 
 #include "MKE02Z2.h"
 
+typedef enum {
+	FALSE = 0x00,
+	TRUE  = 0x01u
+} Boolean;
+
 void ConfigBoardDefaultMuxing(void);
 void Delay(unsigned short ms);
 uint64_t Millis(void);
