@@ -11,22 +11,23 @@
 #include "MKE02Z2.h"
 
 typedef enum {
-	Digital0 = 8u,
-	Digital1 = 9u,
-	Digital2 = 28u,
-	Digital3 = 7u,
-	Digital4 = 31u,
-	Digital5 = 6u,
-	Digital6 = 13u,
-	Digital7 = 30u,
-	Digital8 = 1u,
-	Digital9 = 0,
-	Digital10 = 27u,
-	Digital11 = 25u,
-	Digital12 = 26u,
-	Digital13 = 24u,
-	Digital14 = 2u,
-	Digital15 = 3u
+	Digital0   = 8u,
+	Digital1   = 9u,
+	Digital2   = 28u,
+	Digital3   = 7u,
+	Digital4   = 31u,
+	Digital5   = 6u,
+	Digital6   = 13u,
+	Digital7   = 30u,
+	Digital8   = 1u,
+	Digital9   = 0,
+	Digital10  = 27u,
+	Digital11  = 25u,
+	Digital12  = 26u,
+	Digital13  = 24u,
+	Digital14  = 2u,
+	Digital15  = 3u,
+	DigitalLed = 12u
 } Pin;
 
 typedef enum {
