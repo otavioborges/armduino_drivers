@@ -10,7 +10,10 @@
 
 #include "MKE02Z2.h"
 #include "BoardInit.h"
-#include "Analog.h"
+
+#include "Digital.h"
+#include "Tone.h"
+#include "SPI.h"
 
 /*
  *
@@ -27,31 +30,48 @@
  *
  */
 
-uint32_t countP = 0;
-uint16_t value = 0;
+void ConnectedTone(void){
+	Tone_Note(Re,2);
+	Tone_Note(MiBemol,2);
+	Tone_Note(Fa,6);
+}
 
-uint8_t dataIn[4];
-uint8_t dataOut[4];
+void DisconnectedTone(void){
+	Tone_Note(Re,2);
+	Tone_Note(MiBemol,2);
+	Tone_Note(Do,6);
+}
 
-uint8_t rising = 1;
+#define SPI_READ  0x80
+#define SPI_WRITE 0x00
+
+uint8_t dataOut[2];
+uint8_t dataIn[2];
 
 int main(void){
 	ConfigBoardDefaultMuxing();
 
-	Analog_InitPWM();
-	Analog_SetPWMPin(PWM8,TRUE);
+	Tone_Init(TimedChannel1,Digital7);
+	Tone_Time(50);
 
-	countP = Millis() + 1u;
+	Digital_pinMode(Digital2,INPUT);
+
+	Digital_pinMode(Digital3,OUTPUT);
+	Digital_pinMode(DigitalLed,OUTPUT);
+
+	SPI_Init(1000000,Master,ActiveHigh,Middle,MSB);
+
+	Digital_Write(Digital3,LOW);
+	Delay(1000);
+	Digital_Write(Digital3,HIGH);
+	Delay(2000);					// Reset interface
+
+	dataOut[0] = SPI_READ | (0x37 << 1);
+	dataOut[1] = 0;
+	SPI_Transfer(dataOut,dataIn,2);
+
 	while(1){
-		if(Millis() > countP){
-			Analog_Write(PWM8,value);
 
-			countP = Millis() + 1u;
-			value += 10u;
-
-			if(value > 0x7FFF)
-				value = 0;
-		}
 	}
 
 	return 0;
