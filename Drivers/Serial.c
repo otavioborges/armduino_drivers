@@ -12,9 +12,9 @@ functionPtr functionUART0;
 functionPtr functionUART1;
 functionPtr functionUART2;
 
-void UART0_IRQHandler(void){
-	functionUART0();
-}
+//void UART0_IRQHandler(void){
+//	functionUART0();
+//}
 void UART1_IRQHandler(void){
 	functionUART1();
 }

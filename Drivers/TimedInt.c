@@ -28,7 +28,7 @@ void TimedInt_Config(TimedChannel channel, float periodInSec){
 	}
 	PIT->MCR = PIT_MCR_MDIS_MASK; // disable clocks for config
 
-	PIT->CHANNEL[(uint8_t)channel].LDVAL = (uint32_t)(SystemCoreClock * periodInSec);
+	PIT->CHANNEL[(uint8_t)channel].LDVAL = 105u;//(uint32_t)(SystemCoreClock * periodInSec);
 	PIT->CHANNEL[(uint8_t)channel].TCTRL = (PIT_TCTRL_TIE_MASK | PIT_TCTRL_TEN_MASK);
 
 	if(channel == TimedChannel0)
