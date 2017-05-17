@@ -154,3 +154,10 @@ void Serial_SetIRQFunction(SerialNumber serial, functionPtr function){
 			break;
 	}
 }
+
+void Serial_UseAlternateMux(uint8_t alternate){
+	if(alternate)
+		SIM->PINSEL |= SIM_PINSEL_UART0PS_MASK;
+	else
+		SIM->PINSEL &= ~(SIM_PINSEL_UART0PS_MASK);
+}

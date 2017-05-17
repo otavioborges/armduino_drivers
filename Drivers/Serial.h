@@ -39,4 +39,6 @@ void Serial_DisableReceiveIRQ(SerialNumber serial);
 
 void Serial_SetIRQFunction(SerialNumber serial, functionPtr function);
 
+void Serial_UseAlternateMux(uint8_t alternate);
+
 #endif /* DRIVERS_SERIAL_H_ */
