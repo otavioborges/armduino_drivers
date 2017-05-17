@@ -7,6 +7,7 @@
 
 #include "system_MKE02Z2.h"
 #include "Serial.h"
+#include <stdio.h>
 
 functionPtr functionUART0;
 functionPtr functionUART1;
@@ -85,7 +86,7 @@ void Serial_Deinit(SerialNumber serial){
 	}
 }
 
-void Serial_Write(SerialNumber serial, unsigned char *data, unsigned short length){
+void Serial_Write(SerialNumber serial, uint8_t *data, uint16_t length){
 	UART_Type* lUART = SelectUART(serial);
 
 	while((lUART->S1 & UART_S1_TDRE_MASK) == 0);	// wait line to be available
@@ -96,7 +97,7 @@ void Serial_Write(SerialNumber serial, unsigned char *data, unsigned short lengt
 	}
 }
 
-void Serial_Read(SerialNumber serial, unsigned char *data, unsigned short length){
+void Serial_Read(SerialNumber serial, uint8_t *data, uint16_t length){
 	UART_Type* lUART = SelectUART(serial);
 
 	uint16_t pos = 0;
@@ -160,4 +161,33 @@ void Serial_UseAlternateMux(uint8_t alternate){
 		SIM->PINSEL |= SIM_PINSEL_UART0PS_MASK;
 	else
 		SIM->PINSEL &= ~(SIM_PINSEL_UART0PS_MASK);
+}
+
+void Serial_Print(SerialNumber serial, char* string){
+	uint8_t currentChar = *string;
+	uint16_t displacment = 0;
+	UART_Type* lUART = SelectUART(serial);
+
+	while((lUART->S1 & UART_S1_TDRE_MASK) == 0);	// wait line to be available
+
+	while(currentChar != '\0'){
+		lUART->D = currentChar;
+		displacment++;
+		currentChar = *(string+displacment);
+
+		while((lUART->S1 & UART_S1_TDRE_MASK) == 0);	// wait line to be available
+	}
+}
+
+char numericBuffer[30];
+void Serial_PrintInteger(SerialNumber serial, int value){
+	sprintf(numericBuffer,"%d",value);
+	Serial_Print(serial,numericBuffer);
+}
+void Serial_PrintDecimal(SerialNumber serial, float value){
+	uint16_t integerPart = (uint16_t)value;
+	uint8_t decimalPart = (uint8_t)((value - integerPart)*100);
+	sprintf(numericBuffer,"%d.%d",integerPart,decimalPart);
+
+	Serial_Print(serial,numericBuffer);
 }
