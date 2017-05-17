@@ -17,8 +17,13 @@ void Watchdog_IRQHandler(void){
 }
 
 uint8_t Watchdog_Setup(float timeout, uint8_t enableInterrupt){
-
+	uint8_t cs2Value = 0;
 	uint32_t timerValue = (SystemCoreClock * timeout);
+	if(timerValue > 0xFFFF){
+		cs2Value = WDOG_CS2_PRES_MASK;	// use 256 prescaler
+		timerValue = timerValue >> 8;
+	}
+
 	if(timerValue > 0xFFFF)
 		return 0;
 	else if(timerValue == 0)
@@ -29,7 +34,7 @@ uint8_t Watchdog_Setup(float timeout, uint8_t enableInterrupt){
 	WDOG->TOVAL8B.TOVALL = timerValue;
 	WDOG->TOVAL8B.TOVALH = (timerValue >> 8);
 
-	WDOG->CS2 = 0;
+	WDOG->CS2 = cs2Value;
 	if(enableInterrupt)
 		WDOG->CS1 |= (WDOG_CS1_EN_MASK | WDOG_CS1_INT_MASK);
 	else
@@ -42,6 +47,7 @@ uint8_t Watchdog_Setup(float timeout, uint8_t enableInterrupt){
 void Watchdog_Disable(void){
 	__disable_irq();
 	WDOG_UNLOCK
+	WDOG->CS2 = 0;
 	WDOG->CS1 &= ~(WDOG_CS1_EN_MASK | WDOG_CS1_INT_MASK);
 	__enable_irq();
 }
