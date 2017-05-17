@@ -14,9 +14,10 @@
 #include "MKE02Z2.h"
 
 typedef enum{
-	PWM6 = 5u,
-	PWM8 = 1u,
-	PWM9 = 0u
+	PWM6	= 5u,
+	PWM8	= 1u,
+	PWM9	= 0u,
+	PWMLED	= 4u
 } PWM;
 
 typedef enum{

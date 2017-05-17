@@ -67,7 +67,7 @@ void Analog_DeinitAnalog(void){
 }
 
 void Analog_SetPWMPin(PWM pwmPin, uint8_t inverted){
-	if(pwmPin == PWM6){
+	if((pwmPin == PWM6) || (pwmPin == PWMLED)){
 		if((FTM2->MODE & FTM_MODE_WPDIS_MASK) == 0){ // disable write protection
 			if(FTM2->FMS & FTM_FMS_WPEN_MASK)
 				FTM2->MODE |= FTM_MODE_WPDIS_MASK;
@@ -91,7 +91,7 @@ void Analog_SetPWMPin(PWM pwmPin, uint8_t inverted){
 }
 
 void Analog_UnsetPWMPin(PWM pwmPin){
-	if(pwmPin == PWM6){
+	if((pwmPin == PWM6) || (pwmPin == PWMLED)){
 		if((FTM2->MODE & FTM_MODE_WPDIS_MASK) == 0){ // disable write protection
 			if(FTM2->FMS & FTM_FMS_WPEN_MASK)
 				FTM2->MODE |= FTM_MODE_WPDIS_MASK;
