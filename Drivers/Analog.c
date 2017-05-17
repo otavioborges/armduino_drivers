@@ -128,7 +128,7 @@ uint16_t Analog_PWMMaxValue(void){
 }
 
 void Analog_Write(PWM pwmPin, uint16_t value){
-	if(pwmPin == PWM6){
+	if((pwmPin == PWM6) || (pwmPin == PWMLED)){
 		FTM2->CONTROLS[pwmPin].CnV = value;	// revert pin to GPIO
 
 		FTM2->COMBINE |= FTM_COMBINE_SYNCEN2_MASK;
