@@ -8,8 +8,11 @@
 #ifndef DRIVERS_ANALOG_H_
 #define DRIVERS_ANALOG_H_
 
-#define PWM_MIN_VALUE	0
-#define PWM_MAX_VALUE	32767u
+#define PWM_MIN_VALUE		0
+#define PWM_MAX_VALUE		32767u
+
+#define ANALOG_MIN_VALUE	0
+#define ANALOG_MAX_VALUE	0x0FFF
 
 #include "MKE02Z2.h"
 
@@ -46,7 +49,8 @@ void Analog_SetIRQFunction(functionPtr function);
 void Analog_SetPin(AnalogPin pin);
 void Analog_UnsetPin(AnalogPin pin);
 uint16_t Analog_ReadPolling(AnalogPin pin);
-void Analog_ReadIRQStart(AnalogPin pin);
+uint8_t Analog_ReadComplete(void);
+void Analog_StartReading(AnalogPin pin);
 uint16_t Analog_ReadIRQValue(AnalogPin pin);
 
 #endif /* DRIVERS_ANALOG_H_ */

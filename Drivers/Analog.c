@@ -140,13 +140,17 @@ void Analog_UnsetPin(AnalogPin pin){
 }
 
 uint16_t Analog_ReadPolling(AnalogPin pin){
-	ADC->SC1 |= pin;
-
-	while((ADC->SC1 & ADC_SC1_COCO_MASK) == 0);	// wait for conversion to be complete
 	return (uint16_t)ADC->R;
 }
 
-void Analog_ReadIRQStart(AnalogPin pin){
+uint8_t Analog_ReadComplete(void){
+	if(ADC->SC1 & ADC_SC1_COCO_MASK)
+		return 0x01;
+	else
+		return 0;
+}
+
+void Analog_StartReading(AnalogPin pin){
 	ADC->SC1 |= pin;	// start pin conversion
 }
 
