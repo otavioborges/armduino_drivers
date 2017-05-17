@@ -128,7 +128,7 @@ void I2C_MasterSendMsg(uint16_t slaveAddress, uint8_t *msg, uint16_t length){
 		I2C_MasterWrite(((uint8_t)((slaveAddress << 1) | I2C_Write)));
 	}
 
-	for(uint16_t pos; pos < length; pos++){
+	for(uint16_t pos = 0; pos < length; pos++){
 		I2C_MasterWrite(msg[pos]);
 	}
 
@@ -149,7 +149,7 @@ void I2C_MasterRecvMsg(uint16_t slaveAddress, uint8_t *msg, uint16_t length){
 	// read one dummy byte to switch Rx
 	I2C_MasterRead(0x01);
 
-	for(uint16_t pos; pos < length; pos++){
+	for(uint16_t pos = 0; pos < length; pos++){
 		msg[pos] = I2C_MasterRead(0x01);
 	}
 	I2C_MasterRead(0x00);
