@@ -8,9 +8,6 @@
 #ifndef DRIVERS_ANALOG_H_
 #define DRIVERS_ANALOG_H_
 
-#define PWM_MIN_VALUE		0
-#define PWM_MAX_VALUE		32767u
-
 #define ANALOG_MIN_VALUE	0
 #define ANALOG_MAX_VALUE	0x0FFF
 
@@ -41,6 +38,8 @@ void Analog_DeinitAnalog(void);
 
 void Analog_SetPWMPin(PWM pwmPin, uint8_t inverted);
 void Analog_UnsetPWMPin(PWM pwmPin);
+uint8_t Analog_SetPWMFrequency(uint32_t freq);
+uint16_t Analog_PWMMaxValue(void);
 void Analog_Write(PWM pwmPin, uint16_t value);
 
 void Analog_EnableIRQ(void);

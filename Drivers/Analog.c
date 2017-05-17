@@ -106,6 +106,27 @@ void Analog_UnsetPWMPin(PWM pwmPin){
 	}
 }
 
+uint8_t Analog_SetPWMFrequency(uint32_t freq){
+	if(freq > (SystemCoreClock / 4)) // input frequency to high
+		return 0;
+
+	uint16_t counterValue = SystemCoreClock / freq;
+	if(counterValue > 0x7FFF)	// input frequency to low
+		return 0;
+
+	FTM0->CNT = 0;
+	FTM0->MOD = counterValue;
+
+	FTM2->CNT = 0;
+	FTM2->MOD = counterValue;
+
+	return 0x01;
+}
+
+uint16_t Analog_PWMMaxValue(void){
+	return FTM0->MOD;
+}
+
 void Analog_Write(PWM pwmPin, uint16_t value){
 	if(pwmPin == PWM6){
 		FTM2->CONTROLS[pwmPin].CnV = value;	// revert pin to GPIO
